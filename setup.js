@@ -31,7 +31,7 @@ db.serialize(function () {
 
     //restock
     db.run(
-        'create table restock (restock_id integer primary key autoincrement,product_id integer not null,employee_id integer not null,supplier_id integer not null,restock_kg float not null,restock_date date not null,foreign key (product_id) references product(product_id),foreign key (employee_id) references employee(employee_id),foreign key (supplier_id) references supplier(supplier_id));',
+        'create table restock (restock_id integer primary key autoincrement,supply_id integer not null,employee_id integer not null,restock_kg float not null,restock_date date not null,foreign key (employee_id) references employee(employee_id),foreign key (supply_id) references supply(supply_id));',
     );
 
     //fill in data
@@ -71,10 +71,10 @@ db.serialize(function () {
     );
 
     //restock
-    db.run('insert into restock values (1, 1, 1, 1, 1000, DATE());');
+    db.run('insert into restock values (1, 1, 1, 1000, DATE());');
 
     db.run(
-        'insert into restock (product_id, employee_id, supplier_id, restock_kg, restock_date) values (2,2,1,1200, DATE()), (3, 3, 1, 1500, date()), (4, 4, 2, 500, date()), (5, 1, 2, 500, date()), (6, 3, 2, 500, date()), (3, 1, 1, 850, date());',
+        'insert into restock (supply_id, employee_id, restock_kg, restock_date) values (2,2,1200, DATE()), (3, 3, 1500, date()), (4, 4, 500, date()), (5, 1, 500, date()), (1, 3, 500, date()), (3, 1, 850, date());',
     );
 
     //verify
