@@ -1,4 +1,5 @@
 const sql = require('sqlite3').verbose();
+const axios = require('axios');
 
 var express = require('express');
 var cookieParser = require('cookie-parser');
@@ -104,8 +105,19 @@ app.get('/add', (req, res) => {
     }
     cols += ')';
 
-    if (req.query.table === 'restock')
+    if (req.query.table === 'restock') {
         cols = cols.substring(0, cols.length - 1) + ',restock_date)';
+        db.get(
+            `select product_id, supply_kg from product join supply using(product_id) where supply_id = ${req.query.supply_id};`,
+            (err, row) => {
+                db.run(
+                    `update product set product_stock = product_stock + ${Math.floor(
+                        req.query.kg / row.supply_kg,
+                    )} where product_id = ${row.product_id};`,
+                );
+            },
+        );
+    }
     if (req.query.table === 'employee')
         cols = cols.substring(0, cols.length - 1) + ',employee_joindate)';
 
